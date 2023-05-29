@@ -2,6 +2,7 @@ import random
 import asyncio
 import aiohttp
 from plyer import notification
+import threading
 
 PINK = "\033[95m"
 RESET = "\033[0m"
@@ -19,7 +20,6 @@ ascii_text = r""" {pink}
 
 {reset} """.format(pink=PINK, reset=RESET)
 
-
 print(ascii_text)
 message = input("Type message: ")
 webhook_url = input("Enter webhook: ")
@@ -36,6 +36,9 @@ if use_proxies.lower() == "y":
 else:
     proxy_list = []
 
+spamming_started = False
+spamming_finished = False
+
 async def send_webhook(webhook, msg, proxy):
     async with aiohttp.ClientSession() as session:
         try:
@@ -48,6 +51,10 @@ async def send_webhook(webhook, msg, proxy):
                 if response.status == 204:
                     print("\033[95mWebhook sent successfully.\033[0m")
                     return True
+                elif response.status == 429:
+                    print("\033[91mRate limit reached. Waiting for retry...\033[0m")
+                    await asyncio.sleep(float(response.headers.get("Retry-After", "5")))
+                    return False
                 else:
                     print("\033[91mFailed to send webhook. Status code:", response.status, "\033[0m")
                     return False
@@ -56,11 +63,16 @@ async def send_webhook(webhook, msg, proxy):
             return False
 
 async def spam_webhooks():
-    notification.notify(
-        title="Spamming Started",
-        message="The spamming process has started.",
-        app_icon=None
-    )
+    global spamming_started
+    global spamming_finished
+
+    if not spamming_started:
+        spamming_started = True
+        notification.notify(
+            title="Spamming Started",
+            message="The spamming process has started.",
+            app_icon=None
+        )
 
     tasks = []
     sent_count = 0
@@ -73,15 +85,28 @@ async def spam_webhooks():
         if await task:
             sent_count += 1
 
-    notification.notify(
-        title="Spam Finished",
-        message="The spamming process has finished. Sent: {} Webhooks".format(sent_count),
-        app_icon=None
-    )
+    if not spamming_finished:
+        spamming_finished = True
+        notification.notify(
+            title="Spam Finished",
+            message="The spamming process has finished. Sent: {} Webhooks".format(sent_count),
+            app_icon=None
+        )
 
-try:
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(spam_webhooks())
+def run_spamming():
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(spam_webhooks())
 
-except Exception as e:
-    print("An error occurred:", e)
+    except Exception as e:
+        print("An error occurred:", e)
+
+threads = []
+for _ in range(threads_count):
+    t = threading.Thread(target=run_spamming)
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
