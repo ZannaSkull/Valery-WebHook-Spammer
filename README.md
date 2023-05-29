@@ -12,7 +12,33 @@ Valery WebHook Spammer is a powerful tool for spamming webhooks that allows you 
 - Supports the use of proxies to hide your IP address and enhance anonymity.
 - Customization options for message content, delay between sends, and request timeout.
 - Intuitive and user-friendly interface.
+- Utilize multiple threads to send spam in parallel
+- Desktop notifications to track spamming progress and completion
+- Connect to Discord RPC server to display spamming status on Discord Rich Presence
+
+## Bypassing Rate Limits
+
+Discord imposes rate limits on webhook requests to prevent abuse and ensure the stability of their service. However, Valery WebHook Spammer includes a feature to bypass these rate limits by implementing a retry mechanism. Here's how it works:
+
+1. When a rate limit is encountered (HTTP status code 429), Valery WebHook Spammer will wait for the specified retry duration provided by the Discord API in the `Retry-After` header.
+2. After the waiting period, the program will automatically retry sending the webhook request.
 
 ## Requirements
 
 - Python 3.7 or above
+- `pip` package manager
+
+## Usage
+
+1. Open a terminal or command prompt and navigate to the project directory.
+2. Run the command: `Valery.py`.
+3. Follow the on-screen instructions to provide the necessary inputs, such as message, webhook URL, delay, threads count, etc.
+4. Sit back and watch Valery WebHook Spammer in action!
+
+## Disclaimer
+
+The Valery WebHook Spammer tool is provided for educational and testing purposes only. The developer and contributors shall not be held responsible for any misuse or damage caused by the program. Use it responsibly and at your own risk.
+
+## Credits
+
+Valery WebHook Spammer was created by Hisako. Special thanks to overpower for his ideas and rate limit bypass
