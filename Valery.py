@@ -12,11 +12,11 @@ RESET = "\033[0m"
 BOLD = "\033[1m"
 PURPLE = "\033[35m"
 
-def set_console_title(title):
-    title_bytes = title.encode('cp1252')
-    ctypes.windll.kernel32.SetConsoleTitleA(title_bytes)
+def Title(title):
+    Tutle = title.encode('cp1252')
+    ctypes.windll.kernel32.SetConsoleTitleA(Tutle)
 
-def configure_presence():
+def Presence():
     RPC = Presence(client_id="1112872663384326154")
     RPC.connect()
     RPC.update(
@@ -27,7 +27,7 @@ def configure_presence():
     )
     return RPC
 
-def print_banner():
+def Bunner():
     ascii_text = r""" {bold}{pink}
     
     ██╗   ██╗ █████╗ ██╗     ███████╗██████╗ ██╗   ██╗     
@@ -43,7 +43,7 @@ def print_banner():
     os.system("cls" if os.name == "nt" else "clear")
     print(ascii_text)
 
-def read_input(prompt, input_type):
+def inputty(prompt, input_type):
     while True:
         try:
             user_input = input_type(input(prompt))
@@ -51,15 +51,15 @@ def read_input(prompt, input_type):
         except ValueError:
             print("Invalid input. Please enter a valid value.")
 
-def configure_input():
-    print_banner()
+def Settings():
+    Bunner()
 
     message = input(PURPLE + "Type message: " + RESET)
     webhook_url = input(PURPLE + "Enter webhook: " + RESET)
-    delay = read_input(PURPLE + "Enter a delay: (0-5) ", int)
-    threads_count = read_input(PURPLE + "Enter the number of threads: ", int)
-    messages_count = read_input(PURPLE + "Enter the number of messages to spam: ", int)
-    timeout = read_input(PURPLE + "Enter the request timeout (in seconds): ", float)
+    delay = inputty(PURPLE + "Enter a delay: (0-5) ", int)
+    threads_count = inputty(PURPLE + "Enter the number of threads: ", int)
+    messages_count = inputty(PURPLE + "Enter the number of messages to spam: ", int)
+    timeout = inputty(PURPLE + "Enter the request timeout (in seconds): ", float)
 
     use_proxies = input(PURPLE + "Do you want to use proxies? (Y/N): " + RESET)
     if use_proxies.lower() == "y":
@@ -71,7 +71,7 @@ def configure_input():
 
     return message, webhook_url, delay, threads_count, messages_count, timeout, proxy_list
 
-async def send_webhook(webhook, msg, proxy, timeout):
+async def Sex(webhook, msg, proxy, timeout):
     async with aiohttp.ClientSession() as session:
         try:
             webhook_data = {
@@ -95,11 +95,11 @@ async def send_webhook(webhook, msg, proxy, timeout):
             print("\033[91mFailed to send webhook.\033[0m")
             return False
 
-async def spam_webhooks(webhook_url, message, delay, messages_count, timeout, proxy_list):
+async def Spammly(webhook_url, message, delay, messages_count, timeout, proxy_list):
     sent_count = 0
     while sent_count < messages_count:
         proxy = random.choice(proxy_list) if proxy_list else None
-        success = await send_webhook(webhook_url, message, proxy, timeout)
+        success = await Sex(webhook_url, message, proxy, timeout)
         await asyncio.sleep(delay)
 
         if success:
@@ -107,14 +107,14 @@ async def spam_webhooks(webhook_url, message, delay, messages_count, timeout, pr
 
     return sent_count
 
-def run_spamming(webhook_url, message, delay, messages_count, timeout, proxy_list):
+def URGay(webhook_url, message, delay, messages_count, timeout, proxy_list):
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        sent_count = loop.run_until_complete(spam_webhooks(webhook_url, message, delay, messages_count, timeout, proxy_list))
+        sent_count = loop.run_until_complete(Spammly(webhook_url, message, delay, messages_count, timeout, proxy_list))
 
-        if not spamming_finished:
-            spamming_finished = True
+        if not finished:
+            finished = True
             notification.notify(
                 title="Spam Finished",
                 message="The spamming process has finished. Sent: {} Webhooks".format(sent_count),
@@ -128,17 +128,17 @@ def run_spamming(webhook_url, message, delay, messages_count, timeout, proxy_lis
     RPC.close()
 
 def main():
-    set_console_title("Valery")
-    RPC = configure_presence()
-    print_banner()
-    message, webhook_url, delay, threads_count, messages_count, timeout, proxy_list = configure_input()
+    Title("Valery")
+    RPC = Presence()
+    Bunner()
+    message, webhook_url, delay, threads_count, messages_count, timeout, proxy_list = Settings()
 
-    spamming_started = False
-    spamming_finished = False
+    started = False
+    finished = False
 
     threads = []
     for _ in range(threads_count):
-        t = threading.Thread(target=run_spamming, args=(webhook_url, message, delay, messages_count, timeout, proxy_list))
+        t = threading.Thread(target=URGay, args=(webhook_url, message, delay, messages_count, timeout, proxy_list))
         threads.append(t)
         t.start()
 
