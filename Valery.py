@@ -71,7 +71,7 @@ def Settings():
 
     return message, webhook_url, delay, threads_count, messages_count, timeout, proxy_list
 
-async def Sex(webhook, msg, proxy, timeout):
+async def OnePiaceIsReal(webhook, msg, proxy, timeout):
     async with aiohttp.ClientSession() as session:
         try:
             webhook_data = {
@@ -99,7 +99,7 @@ async def Spammly(webhook_url, message, delay, messages_count, timeout, proxy_li
     sent_count = 0
     while sent_count < messages_count:
         proxy = random.choice(proxy_list) if proxy_list else None
-        success = await Sex(webhook_url, message, proxy, timeout)
+        success = await OnePiaceIsReal(webhook_url, message, proxy, timeout)
         await asyncio.sleep(delay)
 
         if success:
@@ -107,7 +107,7 @@ async def Spammly(webhook_url, message, delay, messages_count, timeout, proxy_li
 
     return sent_count
 
-def URGay(webhook_url, message, delay, messages_count, timeout, proxy_list):
+def Target(webhook_url, message, delay, messages_count, timeout, proxy_list):
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -138,7 +138,7 @@ def main():
 
     threads = []
     for _ in range(threads_count):
-        t = threading.Thread(target=URGay, args=(webhook_url, message, delay, messages_count, timeout, proxy_list))
+        t = threading.Thread(target=Target, args=(webhook_url, message, delay, messages_count, timeout, proxy_list))
         threads.append(t)
         t.start()
 
