@@ -1,5 +1,7 @@
 # Valery WebHook Spammer
 
+[🇬🇧 English](README.md) | [🇮🇹 Italiano](README.it.md)
+
 <p align="center">
 <img src="https://i.pinimg.com/564x/a5/c1/1b/a5c11b552c3afd0d08273fd5f1677f59.jpg", width="500", height="500">
 </p>
@@ -31,7 +33,10 @@ Discord enforces strict rate limits on webhook requests to prevent abuse and ens
 - Additionally, the program intelligently manages concurrent requests using asynchronous queues and semaphores to balance speed and rate limit compliance.
 
 This advanced rate limit handling ensures that Valery WebHook Spammer can send large volumes of messages efficiently without being blocked or timed out by Discord.
-## Requirements
+
+---
+
+## 🛠️ Requirements
 
 - Python 3.8 or above
 - Package manager `pip`
